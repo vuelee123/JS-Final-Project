@@ -1,5 +1,5 @@
 let myHeaders = new Headers();
-myHeaders.append("apikey", 'FKWOzZPttedvabtSHcRf3Hpm0kj70vsM');
+myHeaders.append("apikey", 'tklU0FW2VSqP6gaCb8lJPVyWi2HAkpJS');
 
 let requestOptions = {
   method: 'GET',
@@ -52,7 +52,7 @@ fetch("https://api.apilayer.com/exchangerates_data/symbols", requestOptions)
     historicalRates.addEventListener("click", () => {
         const baseCurrency = document.querySelector("#base-currency").value;
         const targetCurrency = document.querySelector("#target-currency").value;
-        const date = "2023-01-01";
+        const date = "2023-05-05";
 
         fetch(`https://api.apilayer.com/exchangerates_data/${date}?symbols=${targetCurrency}&base=${baseCurrency}`, requestOptions)
         .then(response => response.json())
@@ -70,15 +70,17 @@ fetch("https://api.apilayer.com/exchangerates_data/symbols", requestOptions)
         .catch(error => console.log('error', error));
     });
 
-  function addToStorage(base, target) {
-    let currencyPairs = JSON.parse(localStorage.getItem('currencyPairs')) || [];
-    currencyPairs.push({base: base, target: target});
-    localStorage.setItem('currencyPairs', JSON.stringify(currencyPairs));
-    }
     const saveFavorite = document.getElementById('save-favorite');
-    saveFavorite.addEventListener('click', (event) => {
-        event.preventDefault();
-        addToStorage(baseCurrency.value, targetCurrency.value);
-        });
+    
+    saveFavorite.addEventListener('click', () => {
 
-   
+        const selectPair = `${baseCurrency.value}/${targetCurrency.value}`;
+        const savePair = JSON.parse(localStorage.getItem('savePair')) || [];
+        savePair.push(selectPair);
+        localStorage.setItem('savePair', JSON.stringify(savePair));
+
+    const fave = document.createElement('option');
+    fave.value = selectPair;
+    fave.text = selectPair;
+    saveFavorite.appendChild(fave);
+    });
